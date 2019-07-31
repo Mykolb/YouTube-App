@@ -12,6 +12,13 @@ class App extends React.Component {
     selectedVideo: null
   }
 
+
+  //create defaukt search
+componentDidMount() {
+  this.onTextSubmit('beyonce') //default search setting 
+}
+
+
 //from searcgv=bar component
   onTextSubmit = async text => {
     console.log(text)
@@ -20,8 +27,13 @@ class App extends React.Component {
         q: text
       }
     });
+
     // res.data.items name in array of objects
-    this.setState({ videos: res.data.items})
+    this.setState({
+      
+      videos: res.data.items,
+      selectedVideo: res.data.items[0] //use first video as default video
+    })
   }
 
 
@@ -38,8 +50,19 @@ render() {
       <SearchBar onSubmit={this.onTextSubmit} />
       {/* I have {this.state.videos.length} videos. */}
       {/* passing in video array created earlier */}
+      <div className='ui grid'>
+        <div className='ui row'>
+          <div className='eleven wide column'>
       <VideoDetail video={this.state.selectedVideo} />
-      <VideoList onVideoSelect={this.onVideoSelect}  videos={this.state.videos} />
+          </div>
+          <div className='five wide column'>
+      <VideoList 
+      onVideoSelect={this.onVideoSelect}  
+      videos={this.state.videos} 
+      />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
